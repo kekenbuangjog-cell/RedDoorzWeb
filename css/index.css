@@ -1,0 +1,54 @@
+/* Home Page Specific Styles */
+.navbar-brand.home {
+    letter-spacing: -0.5px;
+}
+
+.btn-red.home {
+    padding: 8px 24px;
+    font-weight: 600;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.search-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-top: -60px;
+    position: relative;
+    z-index: 10;
+}
+
+.property-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+}
+
+.property-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.price-tag {
+    color: #E52D27;
+    font-weight: 700;
+    font-size: 1.25rem;
+}

@@ -1,0 +1,21 @@
+/* Common Styles Shared Across All Pages */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    color: #E52D27 !important;
+    font-weight: 700;
+}
+
+.btn-red {
+    background-color: #E52D27;
+    color: white;
+    border-radius: 50px;
+}
+
+.btn-red:hover {
+    background-color: #c41e1a;
+    color: white;
+}
