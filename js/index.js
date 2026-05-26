@@ -96,13 +96,19 @@ async function fetchRecommendedProperties() {
             const propertyId = doc.id;
             const detailsUrl = `details.html?id=${encodeURIComponent(propertyId)}`;
             
+            const rating = Number(property.rating || 0);
+            const reviewCount = Number(property.reviewCount || 0);
+            const ratingHtml = reviewCount > 0 
+                ? `<span class="badge bg-primary me-2">${rating.toFixed(1)} / 5</span>`
+                : `<span class="badge bg-secondary me-2">New</span>`;
+            
             const cardHtml = `
                 <div class="col-md-3">
                     <div class="card property-card h-100" onclick="location.href='${detailsUrl}'" style="cursor: pointer;">
                         <img src="${escapeHtml(property.image || 'assets/placeholder.jpg')}" class="card-img-top" alt="${escapeHtml(property.name)}">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-2">
-                                <span class="badge bg-primary me-2">4.5 / 5</span>
+                                ${ratingHtml}
                                 <small class="text-muted">${escapeHtml(property.city)}</small>
                             </div>
                             <h5 class="card-title fw-bold text-truncate">${escapeHtml(property.name)}</h5>

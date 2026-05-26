@@ -77,7 +77,7 @@ function applyFiltersAndRender() {
     window.history.replaceState({}, '', url);
 
     // Update UI
-    if (searchLocationEl) searchLocationEl.textContent = search || 'Cebu';
+    if (searchLocationEl) searchLocationEl.textContent = search ? `in "${search}"` : '';
 
     // 1. Filter by Search
     let properties = [...allProperties];
