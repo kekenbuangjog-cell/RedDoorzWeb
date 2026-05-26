@@ -10,17 +10,17 @@
                     <h3 class="fw-bold">Welcome Back</h3>
                     <p class="text-muted">Log in to your account</p>
                 </div>
-                <?php if (isset($_SESSION['login_error'])): ?>
-                    <div class="alert alert-danger py-2 small"><?php echo $_SESSION['login_error']; unset($_SESSION['login_error']); ?></div>
-                <?php endif; ?>
-                <form action="login_action.php" method="POST">
+                <div id="login-error" class="alert alert-danger py-2 small d-none"></div>
+                <form id="login-form" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Email address</label>
-                        <input type="email" name="email" class="form-control rounded-3" placeholder="name@example.com" required>
+                        <input type="email" name="email" id="login-email" class="form-control rounded-3" placeholder="name@example.com" required>
+                        <div class="invalid-feedback">Please enter a valid email.</div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-semibold">Password</label>
-                        <input type="password" name="password" class="form-control rounded-3" placeholder="Enter password" required>
+                        <input type="password" name="password" id="login-password" class="form-control rounded-3" placeholder="Enter password" required>
+                        <div class="invalid-feedback">Password is required.</div>
                     </div>
                     <button type="submit" class="btn btn-red w-100 py-2 rounded-3">Log In</button>
                 </form>
@@ -46,14 +46,17 @@
                     <h3 class="fw-bold">Partner Login</h3>
                     <p class="text-muted">Manage your property listings</p>
                 </div>
-                <form action="partner_login_action.php" method="POST">
+                <div id="partner-login-error" class="alert alert-danger py-2 small d-none"></div>
+                <form id="partner-login-form" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Business Email</label>
-                        <input type="email" name="email" class="form-control rounded-3" placeholder="partner@example.com" required>
+                        <input type="email" name="email" id="partner-email" class="form-control rounded-3" placeholder="partner@example.com" required>
+                        <div class="invalid-feedback">Business email is required.</div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-semibold">Password</label>
-                        <input type="password" name="password" class="form-control rounded-3" placeholder="••••••••" required>
+                        <input type="password" name="password" id="partner-password" class="form-control rounded-3" placeholder="Password" required>
+                        <div class="invalid-feedback">Password is required.</div>
                     </div>
                     <button type="submit" class="btn btn-dark w-100 py-2 rounded-3">Log In to Portal</button>
                 </form>
@@ -77,30 +80,37 @@
                     <h3 class="fw-bold">Partner with Us</h3>
                     <p class="text-muted">Fill out your business details</p>
                 </div>
-                <form action="partner_register_action.php" method="POST">
+                <div id="partner-register-error" class="alert alert-danger py-2 small d-none"></div>
+                <form id="partner-register-form" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Corporate Name</label>
-                        <input type="text" name="corp_name" class="form-control rounded-3" placeholder="e.g., Grand Cebu Hotels Inc." required>
+                        <input type="text" name="corp_name" id="partner-reg-name" class="form-control rounded-3" placeholder="e.g., Grand Cebu Hotels Inc." required>
+                        <div class="invalid-feedback">Corporate name is required.</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">TIN Number</label>
-                        <input type="text" name="tin" class="form-control rounded-3" placeholder="000-000-000-000" required>
+                        <input type="text" name="tin" id="partner-reg-tin" class="form-control rounded-3" placeholder="000-000-000-000" pattern="^\d{3}-\d{3}-\d{3}-\d{3}$" required>
+                        <div class="invalid-feedback">Format: 000-000-000-000</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Business Contact</label>
-                        <input type="text" name="contact" class="form-control rounded-3" placeholder="0917XXXXXXX" required>
+                        <input type="text" name="contact" id="partner-reg-contact" class="form-control rounded-3" placeholder="0917XXXXXXX" pattern="^09\d{9}$" required>
+                        <div class="invalid-feedback">Enter a valid 11-digit number starting with 09.</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Business Address</label>
-                        <input type="text" name="part_address" class="form-control rounded-3" placeholder="Street, City, Province" required>
+                        <input type="text" name="part_address" id="partner-reg-address" class="form-control rounded-3" placeholder="Street, City, Province" required>
+                        <div class="invalid-feedback">Business address is required.</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Business Email</label>
-                        <input type="email" name="email" class="form-control rounded-3" placeholder="admin@myhotel.com" required>
+                        <input type="email" name="email" id="partner-reg-email" class="form-control rounded-3" placeholder="admin@myhotel.com" required>
+                        <div class="invalid-feedback">Enter a valid business email.</div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-semibold">Create Password</label>
-                        <input type="password" name="password" class="form-control rounded-3" required>
+                        <input type="password" name="password" id="partner-reg-password" class="form-control rounded-3" minlength="6" required>
+                        <div class="invalid-feedback">Password must be at least 6 characters.</div>
                     </div>
                     <button type="submit" class="btn btn-red w-100 py-2 rounded-3">Submit Application</button>
                 </form>
@@ -121,31 +131,34 @@
                     <h3 class="fw-bold">Create an Account</h3>
                     <p class="text-muted">Join RedDoorz today</p>
                 </div>
-                <?php if (isset($_SESSION['register_error'])): ?>
-                    <div class="alert alert-danger py-2 small"><?php echo $_SESSION['register_error']; unset($_SESSION['register_error']); ?></div>
-                <?php endif; ?>
-                <form action="register_action.php" method="POST">
+                <div id="register-error" class="alert alert-danger py-2 small d-none"></div>
+                <form id="register-form" class="needs-validation" novalidate>
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <label class="form-label small fw-semibold">First Name</label>
-                            <input type="text" name="fname" class="form-control rounded-3" placeholder="John" required>
+                            <input type="text" name="fname" id="reg-fname" class="form-control rounded-3" placeholder="John" required>
+                            <div class="invalid-feedback">Required.</div>
                         </div>
                         <div class="col-6">
                             <label class="form-label small fw-semibold">Last Name</label>
-                            <input type="text" name="lname" class="form-control rounded-3" placeholder="Doe" required>
+                            <input type="text" name="lname" id="reg-lname" class="form-control rounded-3" placeholder="Doe" required>
+                            <div class="invalid-feedback">Required.</div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Phone Number</label>
-                        <input type="text" name="phone" class="form-control rounded-3" placeholder="09123456789" required>
+                        <input type="text" name="phone" id="reg-phone" class="form-control rounded-3" placeholder="09123456789" pattern="^09\d{9}$" required>
+                        <div class="invalid-feedback">Start with 09 (11 digits).</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Email address</label>
-                        <input type="email" name="email" class="form-control rounded-3" placeholder="name@example.com" required>
+                        <input type="email" name="email" id="reg-email" class="form-control rounded-3" placeholder="name@example.com" required>
+                        <div class="invalid-feedback">Valid email required.</div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-semibold">Password</label>
-                        <input type="password" name="password" class="form-control rounded-3" placeholder="Create password" required>
+                        <input type="password" name="password" id="reg-password" class="form-control rounded-3" placeholder="Create password" minlength="6" required>
+                        <div class="invalid-feedback">At least 6 characters.</div>
                     </div>
                     <button type="submit" class="btn btn-red w-100 py-2 rounded-3">Sign Up</button>
                 </form>

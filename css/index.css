@@ -9,25 +9,69 @@
 }
 
 .hero-section {
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80');
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80');
     background-size: cover;
     background-position: center;
-    height: 500px;
+    height: 550px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    text-align: center;
+}
+
+.hero-section h1 {
+    text-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .search-container {
     background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 15px 40px;
+    border-radius: 100px;
     margin-top: -60px;
     position: relative;
     z-index: 10;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-input-group {
+    border: none;
+    padding: 0;
+}
+
+.search-btn-circular {
+    border-radius: 50% !important;
+    width: 54px;
+    height: 54px;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(229, 45, 39, 0.2);
+}
+
+.search-btn-circular i {
+    font-size: 1.4rem;
+}
+
+.quick-search-chip {
+    text-decoration: none;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid #e9ecef;
+}
+
+.quick-search-chip:hover {
+    background-color: #E52D27;
+    color: white;
+    transform: translateY(-2px);
 }
 
 .property-card {
@@ -51,4 +95,16 @@
     color: #E52D27;
     font-weight: 700;
     font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        border-radius: 30px;
+        padding: 20px;
+    }
+    
+    .search-btn-circular {
+        width: 48px;
+        height: 48px;
+    }
 }

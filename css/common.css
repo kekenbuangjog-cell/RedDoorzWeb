@@ -13,9 +13,27 @@ body {
     background-color: #E52D27;
     color: white;
     border-radius: 50px;
+    transition: all 0.3s ease;
+    border: none;
 }
 
 .btn-red:hover {
     background-color: #c41e1a;
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(229, 45, 39, 0.3);
+}
+
+.soft-shadow {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* Custom Spinner */
+.text-red {
+    color: #E52D27 !important;
+}
+
+/* Navbar Placeholder to prevent layout shift */
+#navbar-placeholder {
+    min-height: 72px; /* Standard navbar height */
 }

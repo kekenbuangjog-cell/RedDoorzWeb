@@ -1,0 +1,125 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc(uid) {
+      return get(/databases/$(database)/documents/users/$(uid));
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function isPartner() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && userDoc(request.auth.uid).data.role == 'partner';
+    }
+
+    function isCustomer() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && userDoc(request.auth.uid).data.role == 'user';
+    }
+
+    function propertyDoc(propId) {
+      return get(/databases/$(database)/documents/properties/$(propId));
+    }
+
+    match /users/{userId} {
+      allow create: if isOwner(userId)
+        && request.resource.data.role in ['user', 'partner']
+        && request.resource.data.email == request.auth.token.email;
+      allow read: if isOwner(userId);
+      allow update: if isOwner(userId)
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.email == resource.data.email;
+      allow delete: if false;
+    }
+
+    match /properties/{propertyId} {
+      allow read: if true;
+      allow create: if isPartner()
+        && request.resource.data.partnerId == request.auth.uid
+        && request.resource.data.price is number
+        && request.resource.data.price > 0;
+      allow update: if (isPartner()
+        && resource.data.partnerId == request.auth.uid
+        && request.resource.data.partnerId == request.auth.uid
+        && request.resource.data.price is number
+        && request.resource.data.price > 0)
+        || (
+          // Allow guests to update only rating-related fields when leaving a review
+          signedIn()
+          && request.resource.data.diff(resource.data).changedKeys().hasOnly(['rating', 'reviewCount'])
+        );
+      allow delete: if isPartner()
+        && resource.data.partnerId == request.auth.uid;
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && exists(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+        && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'completed'
+        && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    match /bookings/{bookingId} {
+      allow create: if isCustomer()
+        && request.resource.data.userId == request.auth.uid
+        && exists(/databases/$(database)/documents/properties/$(request.resource.data.propId))
+        && request.resource.data.propName == propertyDoc(request.resource.data.propId).data.name
+        && request.resource.data.pricePerNight == propertyDoc(request.resource.data.propId).data.price
+        && request.resource.data.nights is number
+        && request.resource.data.nights > 0
+        && request.resource.data.totalPrice == request.resource.data.pricePerNight * request.resource.data.nights
+        && request.resource.data.status == 'confirmed'
+        && request.resource.data.totalPrice is number;
+      allow read: if signedIn()
+        && (
+          resource.data.userId == request.auth.uid
+          || isAdmin()
+          || (
+            isPartner()
+            && exists(/databases/$(database)/documents/properties/$(resource.data.propId))
+            && propertyDoc(resource.data.propId).data.partnerId == request.auth.uid
+          )
+        );
+      allow update: if signedIn() && (
+        // Case 1: Guest cancelling a confirmed booking
+        (
+          isCustomer()
+          && resource.data.userId == request.auth.uid
+          && resource.data.status == 'confirmed'
+          && request.resource.data.diff(resource.data).changedKeys().hasOnly(['status', 'cancelledAt'])
+          && request.resource.data.status == 'cancelled'
+        )
+        ||
+        // Case 2: Partner updating status (check-in, complete, no-show)
+        (
+          isPartner()
+          && exists(/databases/$(database)/documents/properties/$(resource.data.propId))
+          && propertyDoc(resource.data.propId).data.partnerId == request.auth.uid
+          && request.resource.data.diff(resource.data).changedKeys().hasOnly(['status', 'checkedInAt', 'completedAt', 'noShowAt'])
+          && request.resource.data.status in ['checked-in', 'completed', 'no-show']
+        )
+      );
+      allow delete: if false;
+    }
+  }
+}
+kedInAt', 'completedAt', 'noShowAt'])
+          && request.resource.data.status in ['checked-in', 'completed', 'no-show']
+        )
+      );
+      allow delete: if false;
+    }
+  }
+}
